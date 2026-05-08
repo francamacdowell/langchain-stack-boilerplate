@@ -1,0 +1,15 @@
+[project]
+name = "langchain-stack-boilerplate"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "deepagents>=0.5.7",
+    "fastapi>=0.136.1",
+    "langchain>=1.2.17",
+    "langchain-openrouter>=0.2.3",
+    "langgraph-cli[inmem]>=0.4.25",
+    "python-dotenv>=1.2.2",
+    "uvicorn[standard]>=0.46.0",
+]
