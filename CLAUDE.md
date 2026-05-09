@@ -27,3 +27,16 @@ uv sync                      # install/sync dependencies from uv.lock
 - Compose multi-agent workflows with LangGraph (`StateGraph`, prebuilt `create_react_agent`, etc.)
 - Wire model providers via `langchain-anthropic` (Claude) or `langchain-google-genai` (Gemini) — both are installed and ready to use
 - LangGraph checkpointers (from `langgraph-checkpoint`) enable stateful/resumable workflows when needed
+
+## Containerized workflow
+
+Only the FastAPI server (`api.py`) is containerized — `main.py` and `langgraph dev` continue to run via `uv` on the host. The image is a multi-stage build: an `astral-sh/uv` builder resolves the venv from `uv.lock`, then a `python:3.12-slim` runtime stage runs as a non-root user.
+
+```bash
+make docker-build   # build langchain-stack:local
+make docker-up      # FastAPI on http://localhost:8000
+make docker-logs
+make docker-down
+```
+
+Inside the image, dependencies are installed strictly via `uv sync --frozen` against `uv.lock` — never `pip`. `.env` is read at runtime through `env_file`; it is in `.dockerignore` and must never be copied into a layer.
