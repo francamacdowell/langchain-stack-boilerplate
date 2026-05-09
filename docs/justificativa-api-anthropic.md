@@ -1,21 +1,24 @@
 # Justificativa de Uso da API Anthropic (Claude)
-**Projeto:** LangChain Stack Boilerplate — Infraestrutura Interna de Agentes de IA  
-**Data:** Maio de 2026 
+
+**Projeto:** LangChain Stack Boilerplate — Infraestrutura Interna de Agentes de IA
 **Responsável:** França Mac Dowell
 
 ---
+# 1. Resumo Executivo
 
-## 1. Resumo Executivo
+## O que é o projeto
 
-Este documento justifica o custo de uso da API da Anthropic (modelo Claude) no contexto do projeto interno **LangChain Stack Boilerplate**. O projeto consiste em uma base de infraestrutura reutilizável para construção de agentes de inteligência artificial, um ativo estratégico que reduz significativamente o tempo de entrega em projetos futuros com IA para clientes. O investimento na API é proporcional ao uso real (modelo pay-per-use), sem custo fixo de licença, e o retorno se materializa na forma de velocidade de entrega, padronização técnica e posicionamento competitivo da consultoria no mercado de IA, vale salientar que o será baixo e exclusivamente para desenvolvimento local.
+O LangChain Stack Boilerplate é uma base de código para construção de agentes conversacionais com LLMs. Entrega um agente capaz de raciocinar e usar ferramentas externas, memória e uma API REST. Se necessário, trocar de provedor (Gemini, OpenAI) é uma mudança de uma linha utilizando essa arquitetura e framework.
 
----
+## Como será realizado
 
-## 2. Visão Geral do Projeto
+O stack é Python 3.12 + DeepAgents + LangChain/LangGraph + FastAPI, com `uv` como gerenciador de pacotes. O custo da API é pay-per-use (cobrança por token, sem mensalidade) e nesta fase se restringe a desenvolvimento local com repositório no GitHub: chamadas em volume baixo e controlado, limitadas a testes e exploração técnica.
 
-### O que é
+## Benefícios para a Cheesecake Labs
 
-O **LangChain Stack Boilerplate** é uma base de código de produção para construção de agentes conversacionais inteligentes. Ele encapsula as melhores práticas de orquestração de LLMs (Large Language Models) em uma estrutura pronta para uso, eliminando o trabalho repetitivo de configuração que hoje acontece do zero a cada novo projeto de IA.
+Cada novo projeto de IA na Cheesecake hoje começa do zero: configuração de LLM, memória, API e streaming. Com o boilerplate, esse setup vai de vários dias para horas, tempo que volta a ser horas faturáveis na entrega ao cliente. Engenheiros aprendem padrões de IA de produção em tempo interno, não no orçamento do cliente, e times distintos passam a usar as mesmas convenções, reduzindo onboarding e revisão entre projetos. Em conversas comerciais, a Cheesecake passa a demonstrar infraestrutura de IA funcional, agente, API e streaming, em vez de apresentações conceituais.
+
+# 2. Visão Geral do Projeto
 
 ### O que entrega hoje
 
@@ -43,7 +46,7 @@ POST /chat/stream   → conversa com streaming em tempo real
 
 ---
 
-## 3. Por que Anthropic e o Modelo Claude
+# 3. Por que Anthropic e o Modelo Claude
 
 ### Escolha técnica
 
@@ -53,47 +56,13 @@ O modelo configurado é o **Claude Sonnet 4.6**, da família Claude, o ponto de 
 - **Uso de ferramentas (tool use):** suporte nativo a funções externas, sem workarounds
 - **Instrução e seguimento de regras:** Claude é consistentemente avaliado como superior em precisão de seguimento de instruções complexas
 
-### Flexibilidade de troca
-
-A arquitetura usa `init_chat_model` do LangChain, o que significa que **trocar de modelo é uma mudança de uma linha de configuração** — sem reescrita de código. Gemini (Google) e modelos OpenAI são alternativas imediatas caso haja necessidade de mudança de provedor.
-
 ### Perfil adequado para clientes enterprise
 
 O Claude tem política clara de **não usar dados de clientes para treinar modelos**, o que é um requisito frequente em contratos com clientes corporativos. Isso remove fricção comercial.
 
 ---
 
-## 4. Valor para a Cheesecake Labs
-
-### 4.1 Velocidade de entrega
-
-Sem este boilerplate, cada novo projeto de IA na Cheesecake começa do zero: escolha de stack, configuração de LLM, implementação de memória, criação de API, testes de streaming. Com o boilerplate, **esse trabalho inicial cai de semanas para dias ou horas**.
-
-Em uma consultoria, tempo é diretamente margem. Reduzir o tempo de setup libera horas faturáveis para a entrega real de valor ao cliente.
-
-### 4.2 Padronização técnica
-
-Com uma base comum, todos os engenheiros da Cheesecake que trabalham com IA usam os mesmos padrões: mesmos frameworks, mesmas abstrações, mesmas convenções. Isso reduz:
-
-- Custo de onboarding em projetos de IA
-- Tempo de revisão de código
-- Risco de decisões técnicas inconsistentes entre projetos
-
-### 4.3 Posicionamento comercial
-
-A Cheesecake pode demonstrar infraestrutura real de IA em conversas de venda — não apenas apresentações conceituais. Um agente funcional, com API e streaming, é um diferencial tangível frente a concorrentes que ainda estão na fase de prova de conceito.
-
-### 4.4 Multiplicador de receita
-
-Um único investimento interno habilita cobrança em múltiplos projetos de clientes. O boilerplate é um ativo reutilizável — o custo de criação é diluído a cada novo projeto que o utiliza como base.
-
-### 4.5 Desenvolvimento de time
-
-Os engenheiros aprendem padrões de IA de produção (agentes, ferramentas, memória, streaming) em tempo interno — não às custas do orçamento ou da timeline de um cliente.
-
----
-
-## 5. Justificativa de Custo
+# 4. Justificativa de Custo
 
 ### Modelo de cobrança
 
@@ -112,7 +81,7 @@ Isso elimina surpresas no faturamento e permite ajuste fino de parâmetros (temp
 
 ---
 
-## 6. Anexo Técnico
+## 5. Anexo Técnico
 
 ### Stack completo
 
