@@ -11,3 +11,12 @@ wheels/
 
 # Environment variables
 .env
+
+# MacOs files
+.DS_Store
+
+# LangGraph API state
+.langgraph_api/
+
+# Specific files
+docs/
