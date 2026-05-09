@@ -1,0 +1,27 @@
+# Secrets — must never enter an image layer
+.env
+.env.*
+
+# Virtual environments / build artefacts
+.venv/
+build/
+dist/
+wheels/
+*.egg-info
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# LangGraph dev-server state
+.langgraph_api/
+
+# VCS / editor / OS
+.git/
+.gitignore
+.DS_Store
+.claude/
+
+# Project-local notes and docs (not needed at runtime)
+docs/
+todo-list.md
