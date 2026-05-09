@@ -30,3 +30,9 @@ make docker-down    # stop
 ```
 
 Run `make help` to see all available targets.
+
+## Constitution
+
+- [Mission](docs/constitution/mission.md) — vision, scope, and guiding principles
+- [Tech Stack](docs/constitution/tech-stack.md) — full stack reference, dev through deployment
+- [Roadmap](docs/constitution/roadmap.md) — phases and current status
