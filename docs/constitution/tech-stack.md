@@ -60,7 +60,6 @@ API keys are injected via environment variables (`.env` / `env_file`), never har
   | `make install` | `uv sync` |
   | `make run` | One-shot demo via `main.py` |
   | `make serve` | FastAPI dev server on `:8000` |
-  | `make dev` | LangGraph Studio on `:2024` |
   | `make docker-build/up/down/logs/shell/clean` | Container lifecycle |
 
 ## State Persistence
@@ -78,7 +77,7 @@ API keys are injected via environment variables (`.env` / `env_file`), never har
   2. Runtime stage: `python:3.12-slim`, runs as non-root user `appuser`
 - **docker-compose.yml** — single `api` service; `.env` injected via `env_file`
 - Healthcheck: `curl -fsS http://localhost:8000/health` every 30 s
-- Only `api.py` is containerized; `main.py` and `langgraph dev` run on the host via `uv`
+- Only `api.py` is containerized; `main.py` run on the host via `uv`
 
 ## Observability
 

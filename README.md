@@ -1,5 +1,10 @@
 # langchain-stack-boilerplate
 
+[![CI](https://github.com/francamacdowell/langchain-stack-boilerplate/actions/workflows/ci.yml/badge.svg)](https://github.com/francamacdowell/langchain-stack-boilerplate/actions/workflows/ci.yml)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+
 Python 3.12 boilerplate for LangChain / LangGraph / `deepagents` applications, with a FastAPI wrapper and Docker support.
 
 ## Prerequisites
@@ -8,16 +13,7 @@ Python 3.12 boilerplate for LangChain / LangGraph / `deepagents` applications, w
 - Docker + Docker Compose (required for the containerized workflow and for self-hosted Langfuse)
 - `.env` at the repo root — copy [`.env.example`](.env.example) and fill in `ANTHROPIC_API_KEY` plus the Langfuse keys (see [Observability](#observability)).
 
-## Running locally
-
-```bash
-make install   # install dependencies
-make run       # run the demo agent (main.py)
-make serve     # FastAPI on http://localhost:8000
-make dev       # LangGraph dev server + Studio UI on http://localhost:2024
-```
-
-## Running with Docker (FastAPI only)
+## Running with Docker (recommended) (FastAPI only)
 
 ```bash
 make docker-build   # build the image
@@ -93,9 +89,6 @@ make docker-down  # stops both
 
 ## Testing
 
-<!-- CI badge — replace <owner>/<repo> once the repo is published on GitHub -->
-<!-- [![CI](https://github.com/<owner>/<repo>/actions/workflows/ci.yml/badge.svg)](https://github.com/<owner>/<repo>/actions/workflows/ci.yml) -->
-
 The test suite runs offline — no API key, no Langfuse stack, no internet access required.
 
 ```bash
@@ -110,10 +103,18 @@ Pass pytest flags via `ARGS`:
 make test ARGS="-k tracing -v"
 ```
 
-CI runs automatically on every push and pull request via `.github/workflows/ci.yml`.
+CI runs automatically on every pull request targeting `main` via `.github/workflows/ci.yml`.
 
 ## Constitution
 
 - [Mission](docs/constitution/mission.md) — vision, scope, and guiding principles
 - [Tech Stack](docs/constitution/tech-stack.md) — full stack reference, dev through deployment
 - [Roadmap](docs/constitution/roadmap.md) — phases and current status
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up the dev environment, run tests, and open a pull request. Please also read our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## License
+
+[MIT](LICENSE) — Copyright (c) 2026 França Mac Dowell.

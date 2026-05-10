@@ -11,10 +11,13 @@ from tests.conftest import collect_sse
 
 @pytest.fixture(autouse=True)
 def _mock_api_tracing(monkeypatch):
-    """Prevent the FastAPI lifespan from calling real external services."""
+    """Prevent the FastAPI lifespan and request path from calling real external services."""
     monkeypatch.setattr("api.get_handler", MagicMock(return_value=MagicMock()))
     monkeypatch.setattr("api.shutdown", MagicMock())
     monkeypatch.setattr("api.AsyncPostgresSaver", MagicMock())
+    # build_config (in api.py request handlers) calls tracing.get_handler internally —
+    # mock that binding too so the Langfuse reachability probe never runs.
+    monkeypatch.setattr("tracing.get_handler", MagicMock(return_value=MagicMock()))
 
 
 @pytest.fixture

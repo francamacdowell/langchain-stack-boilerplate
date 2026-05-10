@@ -1,9 +1,11 @@
 [project]
 name = "langchain-stack-boilerplate"
 version = "0.1.0"
-description = "Add your description here"
+description = "Python 3.12 boilerplate for LangChain / LangGraph / deepagents applications, with a FastAPI wrapper and Docker support."
 readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "França Mac Dowell" }]
 dependencies = [
     "deepagents>=0.5.7",
     "fastapi>=0.136.1",
