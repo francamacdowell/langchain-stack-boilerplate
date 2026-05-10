@@ -1,4 +1,5 @@
 import json
+from contextlib import asynccontextmanager
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
@@ -8,8 +9,17 @@ from langgraph.checkpoint.memory import InMemorySaver
 from pydantic import BaseModel
 
 from agent import build_graph
+from tracing import build_config, get_handler, shutdown
 
-app = FastAPI(title="LangChain Agent API")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    get_handler()
+    yield
+    shutdown()
+
+
+app = FastAPI(title="LangChain Agent API", lifespan=lifespan)
 
 # Permissive CORS for local dev — tighten allow_origins for production.
 app.add_middleware(
@@ -29,10 +39,6 @@ class ChatRequest(BaseModel):
 
 def _thread(req_thread_id: str) -> str:
     return req_thread_id or uuid4().hex
-
-
-def _config(thread_id: str) -> dict:
-    return {"configurable": {"thread_id": thread_id}}
 
 
 def _extract_text(content) -> str:
@@ -57,7 +63,7 @@ async def chat(req: ChatRequest):
     try:
         result = await _agent.ainvoke(
             {"messages": [{"role": "user", "content": req.message}]},
-            config=_config(thread_id),
+            config=build_config(thread_id),
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -75,7 +81,7 @@ async def chat_stream(req: ChatRequest):
         try:
             async for event in _agent.astream_events(
                 {"messages": [{"role": "user", "content": req.message}]},
-                config=_config(thread_id),
+                config=build_config(thread_id),
                 version="v2",
             ):
                 if event["event"] == "on_chat_model_stream":

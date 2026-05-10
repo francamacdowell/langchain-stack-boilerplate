@@ -12,6 +12,10 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    # Lets the container reach Langfuse on the host (Linux parity with Docker Desktop):
+    # set LANGFUSE_HOST=http://host.docker.internal:3000 in .env when both stacks run in Docker.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
       interval: 30s

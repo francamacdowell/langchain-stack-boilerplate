@@ -11,9 +11,9 @@
 
 *Goal: traces in Langfuse, clear usage documentation.*
 
-- [ ] Task Spec — detailed engineering spec for the Langfuse integration work
-- [ ] Langfuse integration — wire tracing into the agent; document dashboard setup
-- [ ] README expansion — usage examples, environment setup, per-feature docs
+- [x] [Task Spec](../specs/langfuse-integration.md) — detailed engineering spec for the Langfuse integration work
+- [x] Langfuse integration — wire tracing into the agent; document dashboard setup
+- [x] README expansion — usage examples, environment setup, per-feature docs
 
 ## Phase 3 — Production
 

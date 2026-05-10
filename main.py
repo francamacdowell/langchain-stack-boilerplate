@@ -1,5 +1,6 @@
 from agent import build_graph
 from langgraph.checkpoint.memory import InMemorySaver
+from tracing import build_config, shutdown
 
 agent = build_graph(checkpointer=InMemorySaver())
 
@@ -18,7 +19,8 @@ the limitation in `how_you_computed_counts`. If you encounter any errors please 
 
 result = agent.invoke(
     {"messages": [{"role": "user", "content": content}]},
-    config={"configurable": {"thread_id": "great-gatsby-da"}},
+    config=build_config("great-gatsby-da"),
 )
 
 print(result["messages"][-1].content_blocks)
+shutdown()
