@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --no-install-project
 
 # Copy the project sources and install the project itself.
-COPY agent.py api.py main.py langgraph.json ./
+COPY agent.py api.py tracing.py main.py langgraph.json ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
@@ -40,7 +40,7 @@ WORKDIR /app
 
 # Copy the resolved virtualenv and the application source from the builder.
 COPY --from=builder --chown=appuser:appuser /app/.venv /app/.venv
-COPY --from=builder --chown=appuser:appuser /app/agent.py /app/api.py /app/main.py /app/langgraph.json /app/pyproject.toml ./
+COPY --from=builder --chown=appuser:appuser /app/agent.py /app/api.py /app/tracing.py /app/main.py /app/langgraph.json /app/pyproject.toml ./
 
 USER appuser
 

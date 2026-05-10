@@ -84,7 +84,10 @@ API keys are injected via environment variables (`.env` / `env_file`), never har
 
 ## CI/CD
 
-TBD — no pipeline configured. Constraints: must run `uv sync --frozen`, build the Docker image, and validate the `/health` endpoint.
+- **GitHub Actions** — `.github/workflows/ci.yml` runs on every push and every PR targeting `main`
+- Pipeline: `uv sync --frozen --group test` → `uv lock --check` → `ruff check` → `ruff format --check` → `pytest --cov --cov-fail-under=80` (coverage artifact uploaded) → `docker compose build`
+- Local mirror: `make ci` runs the same steps; `make test` and `make lint` run individual checks
+- Test framework: **pytest** + **pytest-asyncio** (auto mode) + **pytest-cov**; LLM and HTTP fully mocked — no live API calls in CI
 
 ## Deployment Target
 
