@@ -1,7 +1,10 @@
 .DEFAULT_GOAL := help
 
 .PHONY: help install run serve dev clean \
-	docker-build docker-up docker-down docker-logs docker-shell docker-clean
+	docker-build docker-up docker-down docker-logs docker-shell docker-clean \
+	langfuse-up langfuse-down langfuse-logs
+
+LANGFUSE_COMPOSE := docker compose --env-file .env.langfuse -f docker-compose.langfuse.yml
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -39,3 +42,12 @@ docker-shell: ## Open a shell inside the api container
 
 docker-clean: ## Stop the stack and remove the local image
 	docker compose down --rmi local
+
+langfuse-up: ## Start self-hosted Langfuse → http://localhost:3000
+	$(LANGFUSE_COMPOSE) up -d
+
+langfuse-down: ## Stop the self-hosted Langfuse stack
+	$(LANGFUSE_COMPOSE) down
+
+langfuse-logs: ## Tail logs from langfuse-web
+	$(LANGFUSE_COMPOSE) logs -f langfuse-web
