@@ -43,13 +43,11 @@
 
 - [ ] Substack post — deep-dive article covering architecture decisions, lessons learned, and the full stack walkthrough
 - [ ] Thesis piece — opinionated article staking a position on a stack or practice decision
-- [ ] LinkedIn article — practitioner-focused summary highlighting real-world use cases and key takeaways
 
 **Distribution**
 
-- [ ] Hacker News — Show HN launch
-- [ ] Reddit — launch posts in `r/LocalLLaMA`, `r/LangChain`, `r/LLMDevs`
-- [ ] Social distribution — thread-format announcements (LinkedIn) linking to long-form content
+- [ ] LinkedIn post
+- [ ] Reddit — launch posts in `r/LangChain` or other subreddits that is useful
 
 ---
 
