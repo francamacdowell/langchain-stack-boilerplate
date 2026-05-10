@@ -2,7 +2,7 @@
 
 ## Vision
 
-`langchain-stack-boilerplate` exists so that starting an AI agent project means making product decisions, not infrastructure decisions. It provides an opinionated, production-shaped baseline — agent framework chosen, HTTP layer wired, container strategy defined — so teams can ship a working agent on day one and evolve from there.
+`langchain-stack-boilerplate` exists so that any AI engineer or software developer can start building agent applications without fighting infrastructure. It provides an opinionated, production-shaped baseline — agent framework chosen, HTTP layer wired, container strategy defined — so anyone can clone the repo, understand every decision, and ship a working agent on day one.
 
 ## Scope
 
@@ -36,7 +36,9 @@
 
 ## Success Criteria
 
-A new contributor can clone the repo, set `ANTHROPIC_API_KEY` in a `.env` file, run `make install && make serve`, and reach a working `/chat` endpoint in under five minutes.
+A developer clones the repo, sets `ANTHROPIC_API_KEY` in a `.env` file, runs `make install && make serve`, and reaches a working `/chat` endpoint in under five minutes.
+
+A developer discovering the project through a blog post or GitHub understands why each stack decision was made and feels confident adapting it as the starting point for their own agent application.
 
 ---
 
