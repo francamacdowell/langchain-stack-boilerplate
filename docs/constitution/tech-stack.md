@@ -65,8 +65,11 @@ API keys are injected via environment variables (`.env` / `env_file`), never har
 
 ## State Persistence
 
-- **Current:** `InMemorySaver` (bundled with `langgraph-cli[inmem]`) — ephemeral, no external dependency
-- **Future (Phase 3):** `langgraph-checkpoint-postgres` + a Postgres service in `docker-compose.yml` — enables durable, resumable workflows
+- **`AsyncPostgresSaver`** (`langgraph-checkpoint-postgres` ≥3.0) — durable, resumable conversations keyed by `thread_id`; backed by Postgres 17
+- Postgres runs as a service in `docker-compose.yml`, exposed on `127.0.0.1:5433` (avoids conflict with Langfuse's Postgres on `5432`)
+- `setup()` is called at FastAPI lifespan startup — idempotent, creates checkpoint tables on first run
+- `main.py` (demo script) retains `InMemorySaver` — no persistence needed for one-shot runs
+- Connection string injected via `POSTGRES_URI` env var; Docker Compose overrides it to the internal service name at runtime
 
 ## Containerization
 

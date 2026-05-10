@@ -2,6 +2,7 @@
 
 .PHONY: help install run serve dev clean \
 	test lint lint-fix ci \
+	postgres-up postgres-down \
 	docker-build docker-up docker-down docker-logs docker-shell docker-clean \
 	langfuse-up langfuse-down langfuse-logs
 
@@ -31,15 +32,15 @@ ci: ## Mirror the full GitHub Actions CI run locally
 run: ## One-shot demo
 	uv run python main.py
 
-serve: ## FastAPI dev server → http://localhost:8000
-	uv run uvicorn api:app --reload --port 8000
-
-dev: ## LangGraph dev server + Studio UI → http://localhost:2024
-	uv run langgraph dev
-
 clean: ## Remove __pycache__ and .pyc files
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -name "*.pyc" -delete 2>/dev/null || true
+
+postgres-up: ## Start Postgres for local dev → localhost:5433
+	docker compose up -d postgres
+
+postgres-down: ## Stop the Postgres service
+	docker compose stop postgres
 
 docker-build: ## Build the FastAPI Docker image
 	docker compose build

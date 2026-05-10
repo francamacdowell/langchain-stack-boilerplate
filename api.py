@@ -1,22 +1,34 @@
 import json
+import os
 from contextlib import asynccontextmanager
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from pydantic import BaseModel
 
 from agent import build_graph
 from tracing import build_config, get_handler, shutdown
 
+# Assigned during lifespan startup; None until the app is fully initialised.
+_agent = None
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    get_handler()
-    yield
+    global _agent
+    uri = os.environ.get("POSTGRES_URI")
+    if not uri:
+        raise RuntimeError("POSTGRES_URI env var is required. Set it in .env (see .env.example).")
+    async with AsyncPostgresSaver.from_conn_string(uri) as checkpointer:
+        await checkpointer.setup()
+        _agent = build_graph(checkpointer=checkpointer)
+        get_handler()
+        yield
     shutdown()
+    _agent = None
 
 
 app = FastAPI(title="LangChain Agent API", lifespan=lifespan)
@@ -28,8 +40,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-_agent = build_graph(checkpointer=InMemorySaver())
 
 
 class ChatRequest(BaseModel):

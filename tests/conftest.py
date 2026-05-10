@@ -7,6 +7,7 @@ os.environ.setdefault("ANTHROPIC_API_KEY", "sk-ant-api03-test")
 os.environ.setdefault("LANGFUSE_PUBLIC_KEY", "pk-lf-test")
 os.environ.setdefault("LANGFUSE_SECRET_KEY", "sk-lf-test")
 os.environ.setdefault("LANGFUSE_HOST", "http://localhost:3000")
+os.environ.setdefault("POSTGRES_URI", "postgresql://postgres:test@localhost:5433/langgraph")
 
 
 def collect_sse(content: bytes) -> list:
