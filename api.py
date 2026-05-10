@@ -46,8 +46,7 @@ def _extract_text(content) -> str:
         return content
     if isinstance(content, list):
         return "".join(
-            block.get("text", "") if isinstance(block, dict) else str(block)
-            for block in content
+            block.get("text", "") if isinstance(block, dict) else str(block) for block in content
         )
     return str(content)
 
@@ -66,7 +65,7 @@ async def chat(req: ChatRequest):
             config=build_config(thread_id),
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
     return {
         "response": _extract_text(result["messages"][-1].content),
         "thread_id": thread_id,

@@ -61,6 +61,27 @@ LANGFUSE_HOST="http://localhost:3000"     # API on host
 
 Each `POST /chat` produces one trace; the request's `thread_id` becomes the Langfuse session, so multi-turn conversations group together. Stop the stack with `make langfuse-down`.
 
+## Testing
+
+<!-- CI badge — replace <owner>/<repo> once the repo is published on GitHub -->
+<!-- [![CI](https://github.com/<owner>/<repo>/actions/workflows/ci.yml/badge.svg)](https://github.com/<owner>/<repo>/actions/workflows/ci.yml) -->
+
+The test suite runs offline — no API key, no Langfuse stack, no internet access required.
+
+```bash
+make install   # installs runtime + test dependencies
+make test      # run tests with ≥80 % coverage gate
+make lint      # ruff check + format check
+make ci        # mirrors the full GitHub Actions run locally
+```
+
+Pass pytest flags via `ARGS`:
+```bash
+make test ARGS="-k tracing -v"
+```
+
+CI runs automatically on every push and pull request via `.github/workflows/ci.yml`.
+
 ## Constitution
 
 - [Mission](docs/constitution/mission.md) — vision, scope, and guiding principles

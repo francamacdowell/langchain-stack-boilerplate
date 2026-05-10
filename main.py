@@ -1,5 +1,6 @@
-from agent import build_graph
 from langgraph.checkpoint.memory import InMemorySaver
+
+from agent import build_graph
 from tracing import build_config, shutdown
 
 agent = build_graph(checkpointer=InMemorySaver())

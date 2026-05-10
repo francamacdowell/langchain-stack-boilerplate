@@ -11,8 +11,7 @@ def _require_env() -> None:
     missing = [k for k in _REQUIRED if not os.getenv(k)]
     if missing:
         raise RuntimeError(
-            f"Missing Langfuse env vars: {', '.join(missing)}. "
-            f"Set them in .env (see .env.example)."
+            f"Missing Langfuse env vars: {', '.join(missing)}. Set them in .env (see .env.example)."
         )
 
 

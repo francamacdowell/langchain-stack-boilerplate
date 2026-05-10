@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
 .PHONY: help install run serve dev clean \
+	test lint lint-fix ci \
 	docker-build docker-up docker-down docker-logs docker-shell docker-clean \
 	langfuse-up langfuse-down langfuse-logs
 
@@ -9,8 +10,23 @@ LANGFUSE_COMPOSE := docker compose --env-file .env.langfuse -f docker-compose.la
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install / sync all dependencies
-	uv sync
+install: ## Install / sync all dependencies (including test group)
+	uv sync --group test
+
+test: ## Run tests with coverage (≥80 % gate)
+	uv run pytest --cov --cov-fail-under=80 $(ARGS)
+
+lint: ## Check style and formatting (ruff)
+	uv run ruff check . && uv run ruff format --check .
+
+lint-fix: ## Auto-fix style and formatting issues
+	uv run ruff check --fix . && uv run ruff format .
+
+ci: ## Mirror the full GitHub Actions CI run locally
+	uv lock --check
+	$(MAKE) lint
+	$(MAKE) test
+	docker compose build
 
 run: ## One-shot demo
 	uv run python main.py
