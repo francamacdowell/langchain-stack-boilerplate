@@ -61,6 +61,36 @@ LANGFUSE_HOST="http://localhost:3000"     # API on host
 
 Each `POST /chat` produces one trace; the request's `thread_id` becomes the Langfuse session, so multi-turn conversations group together. Stop the stack with `make langfuse-down`.
 
+## State Persistence
+
+Conversation history is stored in **Postgres** via `langgraph-checkpoint-postgres`. Each `thread_id` maps to a durable session that survives API restarts.
+
+**Required env vars** (add to `.env`):
+
+```env
+POSTGRES_PASSWORD="changeme"
+POSTGRES_URI="postgresql://postgres:changeme@localhost:5433/langgraph"
+# When running via make docker-up, docker-compose.yml overrides POSTGRES_URI
+# automatically to use the internal service name (postgres:5432).
+```
+
+**Local dev** — start Postgres, then the API:
+
+```bash
+make postgres-up   # Postgres on localhost:5433
+make serve         # FastAPI on http://localhost:8000
+make postgres-down # stop Postgres when done
+```
+
+**Docker** — Postgres starts automatically with the API:
+
+```bash
+make docker-up    # starts both api and postgres → http://localhost:8000
+make docker-down  # stops both
+```
+
+`make serve` (and `make docker-up`) will fail at startup with a clear error if `POSTGRES_URI` is missing.
+
 ## Testing
 
 <!-- CI badge — replace <owner>/<repo> once the repo is published on GitHub -->

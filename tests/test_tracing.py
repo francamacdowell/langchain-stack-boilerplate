@@ -1,3 +1,4 @@
+import urllib.error
 from unittest.mock import MagicMock
 
 import pytest
@@ -20,6 +21,7 @@ def test_get_handler_is_cached(monkeypatch):
     mock_handler = MagicMock()
     mock_class = MagicMock(return_value=mock_handler)
     monkeypatch.setattr(tracing, "CallbackHandler", mock_class)
+    monkeypatch.setattr(tracing, "_check_langfuse_reachable", lambda: None)
     tracing.get_handler.cache_clear()
     try:
         h1 = tracing.get_handler()
@@ -33,6 +35,7 @@ def test_get_handler_is_cached(monkeypatch):
 def test_build_config_shape(monkeypatch):
     mock_handler = MagicMock()
     monkeypatch.setattr(tracing, "CallbackHandler", MagicMock(return_value=mock_handler))
+    monkeypatch.setattr(tracing, "_check_langfuse_reachable", lambda: None)
     tracing.get_handler.cache_clear()
     try:
         cfg = tracing.build_config("thread-x")
@@ -42,6 +45,34 @@ def test_build_config_shape(monkeypatch):
     assert cfg["configurable"]["thread_id"] == "thread-x"
     assert cfg["metadata"]["langfuse_session_id"] == "thread-x"
     assert cfg["callbacks"] == [mock_handler]
+
+
+def test_check_langfuse_reachable_happy(monkeypatch):
+    mock_resp = MagicMock()
+    mock_resp.status = 200
+    mock_resp.__enter__ = MagicMock(return_value=mock_resp)
+    mock_resp.__exit__ = MagicMock(return_value=False)
+    monkeypatch.setattr("urllib.request.urlopen", MagicMock(return_value=mock_resp))
+    tracing._check_langfuse_reachable()  # must not raise
+
+
+def test_check_langfuse_reachable_raises_on_network_error(monkeypatch):
+    monkeypatch.setattr(
+        "urllib.request.urlopen",
+        MagicMock(side_effect=urllib.error.URLError("connection refused")),
+    )
+    with pytest.raises(RuntimeError, match="Cannot reach Langfuse"):
+        tracing._check_langfuse_reachable()
+
+
+def test_check_langfuse_reachable_raises_on_non_200(monkeypatch):
+    mock_resp = MagicMock()
+    mock_resp.status = 503
+    mock_resp.__enter__ = MagicMock(return_value=mock_resp)
+    mock_resp.__exit__ = MagicMock(return_value=False)
+    monkeypatch.setattr("urllib.request.urlopen", MagicMock(return_value=mock_resp))
+    with pytest.raises(RuntimeError, match="HTTP 503"):
+        tracing._check_langfuse_reachable()
 
 
 def test_shutdown_calls_client_shutdown(monkeypatch):

@@ -11,9 +11,10 @@ from tests.conftest import collect_sse
 
 @pytest.fixture(autouse=True)
 def _mock_api_tracing(monkeypatch):
-    """Prevent the FastAPI lifespan from calling the real Langfuse handler."""
+    """Prevent the FastAPI lifespan from calling real external services."""
     monkeypatch.setattr("api.get_handler", MagicMock(return_value=MagicMock()))
     monkeypatch.setattr("api.shutdown", MagicMock())
+    monkeypatch.setattr("api.AsyncPostgresSaver", MagicMock())
 
 
 @pytest.fixture

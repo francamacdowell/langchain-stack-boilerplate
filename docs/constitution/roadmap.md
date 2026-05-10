@@ -27,7 +27,7 @@
 
 *Goal: a deployment target, durable state, and hardened secrets handling.*
 
-- [ ] Persistent checkpointer — `langgraph-checkpoint-postgres` + Postgres in Docker Compose
+- [x] Persistent checkpointer — `langgraph-checkpoint-postgres` + Postgres in Docker Compose
 
 ## Phase 5 — Strategic Communication
 

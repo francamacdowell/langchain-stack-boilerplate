@@ -9,9 +9,16 @@ services:
     container_name: langchain-stack-api
     env_file:
       - .env
+    environment:
+      # Override POSTGRES_URI so the container uses the internal service name,
+      # regardless of what localhost-pointing value is set in .env.
+      POSTGRES_URI: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-langgraph}
     ports:
       - "8000:8000"
     restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
     # Lets the container reach Langfuse on the host (Linux parity with Docker Desktop):
     # set LANGFUSE_HOST=http://host.docker.internal:3000 in .env when both stacks run in Docker.
     extra_hosts:
@@ -21,4 +28,26 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 5s
+      start_period: 10s
+
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-langgraph}
+    ports:
+      # Bound to 127.0.0.1 to avoid conflict with Langfuse's postgres on 5432.
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:
+    driver: local
