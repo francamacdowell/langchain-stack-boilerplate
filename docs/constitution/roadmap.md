@@ -15,7 +15,14 @@
 - [x] Langfuse integration — wire tracing into the agent; document dashboard setup
 - [x] README expansion — usage examples, environment setup, per-feature docs
 
-## Phase 3 — Production
+## Phase 3 — Tests & CI
+
+*Goal: high test coverage and automated verification on every change.*
+
+- [ ] Test module — unit + integration tests for `tracing.py`, `agent.py`, and the `/chat` and `/chat/stream` endpoints
+- [ ] CI pipeline — run the test suite on every push and pull request
+
+## Phase 4 — Production
 
 *Goal: a deployment target, durable state, and hardened secrets handling.*
 
