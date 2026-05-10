@@ -35,18 +35,20 @@
 
 **Repository readiness**
 
-- [ ] OSS license (MIT or Apache 2.0) — required before any public launch
-- [ ] GitHub presence — polished README with badges, demo GIF, and contribution guidelines (`CONTRIBUTING.md`)
+- [x] OSS license (MIT) — `LICENSE` at repo root
+- [x] GitHub presence — README badges, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
 - [ ] Demo asset — 60-second Loom walkthrough or hosted demo embedded in the README
 
 **Long-form content**
 
-- [ ] Substack post — deep-dive article covering architecture decisions, lessons learned, and the full stack walkthrough
-- [ ] Thesis piece — opinionated article staking a position on a stack or practice decision
+- [ ] Thesis piece — opinionated article staking a position on a practice decision (candidate title: *"What 'production-ready' actually means for an LLM agent"*)
 
 **Distribution**
 
+Ideas:
 - [ ] LinkedIn post
+- [ ] Subreddit of interests
+- [ ] Hacker News — Show HN post once the repo is polished
 - [ ] Reddit — launch posts in `r/LangChain` or other subreddits that is useful
 
 ---
